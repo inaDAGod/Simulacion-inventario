@@ -16,6 +16,7 @@ class Producto:
             if self.stock < self.demanda and not self.orden_pendiente:
                 self.orden_pendiente = True
                 self.env.process(self.realizar_pedido())
+                print(f"Realizando pedido para el producto con demanda {self.demanda}")
 
             yield self.env.timeout(1)
 
@@ -23,6 +24,7 @@ class Producto:
         yield self.env.timeout(3)  # Tiempo que tarda en llegar el pedido
         self.stock += self.demanda
         self.orden_pendiente = False
+        print(f"Pedido recibido. Stock actual: {self.stock}")
 
 class Inventario:
     def __init__(self, env):
@@ -40,6 +42,7 @@ class Inventario:
         for i in range(len(demandas)):
             producto = Producto(self.env, demandas[i], costos_pedido[i], costos_almacenamiento[i])
             self.productos.append(producto)
+            yield self.env.timeout(1)  # Hacer que la función sea un generador
 
 def ejecutar_simulacion():
     env = simpy.Environment()
