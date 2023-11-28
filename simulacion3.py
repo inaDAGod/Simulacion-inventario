@@ -17,7 +17,6 @@ class Producto:
         self.env.process(self.gestion_inventario())
 
     def gestion_inventario(self):
-        print(Fore.CYAN + f"-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"+ Fore.RESET)
         print(Fore.CYAN + f"===============Inicia simulación para el producto {self.nombre}===============" + Fore.RESET)
         while True:
             Cliente_decision = random.choice([True, False]) #HUMOR CLIENTE
@@ -39,7 +38,7 @@ class Producto:
                     self.stock -= cantidad_vendida
                     print(Fore.GREEN +f"🛒🛒 Venta APROBADA de {cantidad_vendida} unidades de {self.nombre}. Stock actual: {self.stock} (Tiempo: {self.env.now:.2f})\n"+ Fore.RESET)
                 else:
-                    print(Fore.YELLOW +f"🛒🛒 Venta PENDIENTE de {cantidad_vendida} unidades de {self.nombre}. Stock actual: {self.stock} (Tiempo: {self.env.now:.2f})"+ Fore.RESET)
+                    print(Fore.YELLOW +f"🛒🛒 Solicitud al cliente por venta de solo {self.stock} unidades de {self.nombre}"+ Fore.RESET)
                     if Cliente_decision:
                         feliz= self.stock
                         self.stock = 0
