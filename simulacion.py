@@ -17,7 +17,7 @@ class Producto:
         self.env.process(self.gestion_inventario())
 
     def gestion_inventario(self):
-        print("-----------------------------------------------")
+        print(Fore.RED + f"-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"+ Fore.RESET)
         print(Fore.CYAN + f"===============Inicia simulación para el producto {self.nombre}===============" + Fore.RESET)
         while True:
             if self.stock <= self.calcular_punto_reorden():
@@ -48,7 +48,7 @@ class Producto:
         yield self.env.timeout(2)  # Tiempo que tarda en llegar el pedido
         self.stock += cantidad_pedido
         self.orden_pendiente = False
-        print(Fore.GREEN +f"📦 Pedido RECIBIDO para {self.nombre}. Stock actual: {self.stock} (Tiempo: {self.env.now:.2f})"+ Fore.RESET)
+        print(Fore.GREEN +f"📦 Pedido RECIBIDO para {self.nombre}. Stock actual: {self.stock} (Tiempo: {self.env.now:.2f})\n"+ Fore.RESET)
 
     def calcular_cantidad_pedido(self):
         # Cálculo del tamaño óptimo de pedido (EOQ)
