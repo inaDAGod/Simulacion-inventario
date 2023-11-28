@@ -19,7 +19,7 @@ class Producto:
         print("-----------------------------------------------")
         print(f"Inicia simulación para {self.nombre}")
         while True:
-            if self.stock <= self.calcular_punto_reorden():
+            if self.stock <= self.calcular_punto_reorden() and not self.orden_pendiente:
                 cantidad_pedido = self.calcular_cantidad_pedido()
                 print(f"EOQ de {self.nombre}:  {cantidad_pedido}")
                 if cantidad_pedido > 0:
@@ -28,6 +28,9 @@ class Producto:
                     print(f"Realizando pedido para {self.nombre} con demanda actual {self.demanda}, con demanda anual {self.demanda_anual} y stock {self.stock} (Tiempo: {self.env.now:.2f})")
                 else:
                     print(f"No es recomendable pedir {self.nombre}")
+            else:
+                print(f"Se tiene un pedido pendiente de {self.nombre}")
+
             yield self.env.timeout(1)
 
     def calcular_punto_reorden(self):

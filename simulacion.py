@@ -22,12 +22,18 @@ class Producto:
             if self.stock <= self.calcular_punto_reorden():
                 cantidad_pedido = self.calcular_cantidad_pedido()
                 print(f"EOQ de {self.nombre}:  {cantidad_pedido}")
-                if cantidad_pedido > 0:
+                if cantidad_pedido > 0 and not self.orden_pendiente:
                     self.orden_pendiente = True
                     self.env.process(self.realizar_pedido(cantidad_pedido))
                     print(f"Realizando pedido para {self.nombre} con demanda actual {self.demanda}, con demanda anual {self.demanda_anual} y stock {self.stock} (Tiempo: {self.env.now:.2f})")
                 else:
-                    print(f"No es recomendable pedir {self.nombre}")
+                    print(f"Pedido pendiente de {self.nombre}")
+            else:
+                # Se reduce el stock en función de la demanda actual
+                cantidad_vendida = random.randint(0, self.demanda)  # Simular la venta de una cantidad aleatoria
+                self.stock -= cantidad_vendida
+                print(f"Venta de {cantidad_vendida} unidades de {self.nombre}. Stock actual: {self.stock} (Tiempo: {self.env.now:.2f})")
+
             yield self.env.timeout(1)
 
     def calcular_punto_reorden(self):
@@ -73,6 +79,6 @@ class Inventario:
 def ejecutar_simulacion():
     env = simpy.Environment()
     inventario = Inventario(env)
-    env.run(until=50)  # Detenemos la simulación en el tiempo 50 
+    env.run(until=30)  # Detenemos la simulación en el tiempo 50 
 
 ejecutar_simulacion()
